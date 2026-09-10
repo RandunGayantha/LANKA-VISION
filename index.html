@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="si">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08090c">
+<title>Lanka Vision Video Maker</title>
+<style>
+@font-face{font-family:Ganganee;src:url('./assets/4u-Ganganee.ttf') format('truetype');font-weight:400;font-display:swap}
+:root{--red:#d40000;--bg:#08090c;--panel:#111318;--panel2:#17191f;--line:#292d35;--muted:#969ba6;--text:#f6f7f9}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+body{overflow-x:hidden}.app{min-height:100vh;display:grid;grid-template-columns:390px minmax(0,1fr)}
+.panel{padding:22px;border-right:1px solid var(--line);background:linear-gradient(180deg,#13151a,#0d0f13);overflow:auto}
+.brand{font-size:20px;font-weight:950;letter-spacing:.2px}.brand b{color:#f00000}.brand small{font-size:9px;color:#737985;margin-left:6px;letter-spacing:1.4px}.intro{color:var(--muted);font-size:12px;line-height:1.5;margin:7px 0 20px}
+.section{padding:14px;border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:15px;margin-bottom:12px}.sectionTitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:#aeb3bd;font-weight:900;margin-bottom:12px}
+.field{margin:0 0 14px}.field:last-child{margin-bottom:0}.field label{display:flex;justify-content:space-between;gap:10px;color:#e4e6eb;font-size:12px;font-weight:800;margin-bottom:7px}.count{color:#777d89;font-weight:600}
+.field textarea{width:100%;min-height:66px;resize:vertical;background:#1b1e24;border:1px solid #343943;border-radius:11px;color:#fff;padding:11px 12px;font:400 22px/1.3 Ganganee,Arial,sans-serif;outline:none}.field textarea:focus{border-color:#ed0000;box-shadow:0 0 0 3px #d4000020}
+.rangeRow{display:grid;grid-template-columns:1fr 58px;gap:10px;align-items:center;margin:10px 0}.rangeRow label{font-size:11px;color:#aaa}.rangeRow output{background:#20242b;border-radius:8px;padding:6px;text-align:center;font-size:11px;color:#fff;font-weight:800}.range{width:100%;accent-color:#e00000}
+.upload{border:1px dashed #454b56;border-radius:13px;padding:14px;background:#15181d}.upload input{width:100%;color:#bbb;font-size:12px}.file{margin-top:8px;font-size:11px;color:#ddd;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.hint{font-size:10px;color:#747a85;line-height:1.5;margin-top:8px}
+.cropHint{font-size:10px;color:#777d89;line-height:1.45;margin-top:8px}.cropButtons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.miniBtn{border:1px solid #353a43;background:#20242a;color:#fff;border-radius:9px;padding:9px;font-size:11px;font-weight:800;cursor:pointer}
+.actions{display:grid;grid-template-columns:1fr 82px;gap:8px;margin-top:12px}.btn{border:0;border-radius:11px;padding:13px 12px;font-weight:900;cursor:pointer}.primary{background:var(--red);color:#fff}.primary:disabled{opacity:.55;cursor:not-allowed}.secondary{background:#292d35;color:#fff}.status{margin-top:10px;font-size:11px;color:#aaa;min-height:18px}.progress{height:4px;background:#252930;border-radius:9px;overflow:hidden;margin-top:8px;display:none}.progress i{display:block;width:0;height:100%;background:#e00000;transition:width .15s}.tip{margin-top:12px;color:#666d78;font-size:10px;text-align:center;line-height:1.45}
+.stage{min-width:0;padding:30px;display:flex;align-items:center;justify-content:center}.work{width:min(76vw,760px)}
+.previewWrap{position:relative;width:100%;aspect-ratio:1;border-radius:18px;overflow:hidden;box-shadow:0 28px 90px #000b;background:#fff;touch-action:none;user-select:none}.videoArea{position:absolute;left:0;top:20%;width:100%;height:76.667%;overflow:hidden;background:#fff;cursor:grab}.videoArea.dragging{cursor:grabbing}.previewWrap video{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;transform-origin:center center;will-change:transform}.empty{position:absolute;z-index:1;left:0;top:20%;width:100%;height:76.667%;display:flex;align-items:center;justify-content:center;color:#999;background:#fff;font-size:14px;text-align:center;padding:20px}
+.template{position:absolute;inset:0;pointer-events:none;z-index:2}.topbar{position:absolute;inset:0 0 auto;height:20%;background:var(--red)}.pill{position:absolute;left:0;top:1.85%;width:92.6%;height:8.8%;background:#fff;border-radius:0 60px 60px 0;display:flex;align-items:center;justify-content:center;padding:0 18px;overflow:hidden}.pillText{font:400 40px/1.02 Ganganee,Arial,sans-serif;text-align:center;color:#050505;white-space:pre-wrap;max-width:100%}.headline{position:absolute;top:11.2%;height:8.8%;width:100%;display:flex;align-items:center;justify-content:center;padding:0 22px;color:#fff;font:400 48px/1.02 Ganganee,Arial,sans-serif;text-align:center;white-space:pre-wrap;overflow:hidden}.logo{position:absolute;right:3.2%;top:21.7%;width:10.4%;height:auto}.footer{position:absolute;bottom:0;left:0;width:100%;height:3.33%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:clamp(9px,1.35vw,15px);font-weight:900;letter-spacing:.2px}
+.cropBadge{position:absolute;left:10px;bottom:10px;z-index:3;background:#000b;color:#fff;border:1px solid #fff3;padding:6px 9px;border-radius:8px;font-size:10px;backdrop-filter:blur(8px)}
+.mobileGenerate{display:none}
+@media(max-width:850px){
+ .app{display:flex;flex-direction:column}.panel{order:2;border-right:0;border-top:1px solid var(--line);padding:15px 14px 92px}.stage{order:1;padding:14px 12px 8px;display:block}.work{width:min(100%,650px);margin:auto}.previewWrap{border-radius:14px;box-shadow:0 15px 45px #0009}.brand{font-size:18px}.intro{margin-bottom:14px}.section{padding:12px;margin-bottom:10px}.field textarea{font-size:21px;min-height:60px}.mobileGenerate{display:block;position:fixed;z-index:20;left:12px;right:12px;bottom:max(10px,env(safe-area-inset-bottom));padding:11px;background:#111318ee;border:1px solid #2c3038;border-radius:14px;backdrop-filter:blur(12px)}.mobileGenerate .btn{width:100%;padding:14px}.actions{display:none}.tip{display:none}
+}
+@media(min-width:851px){.panel{height:100vh;position:sticky;top:0}.mobileGenerate{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="panel">
+  <div class="brand"><b>LANKA</b> VISION <small>VIDEO MAKER</small></div>
+  <div class="intro">Create the same square social-video style without Photoshop. The video crop can be moved by dragging directly on the preview.</div>
+
+  <div class="section">
+    <div class="sectionTitle">Text</div>
+    <div class="field"><label>Top text <span id="topCount" class="count">0</span></label><textarea id="top">දේශනාකාර හිමිට ප්‍රදානය කළ</textarea>
+      <div class="rangeRow"><label>Top text size</label><output id="topSizeOut">40 px</output></div><input class="range" id="topSize" type="range" min="20" max="70" value="40">
+    </div>
+    <div class="field"><label>Main headline <span id="headlineCount" class="count">0</span></label><textarea id="headline">පොදුසමාජ බලරහිත කෙරේ</textarea>
+      <div class="rangeRow"><label>Headline size</label><output id="headlineSizeOut">48 px</output></div><input class="range" id="headlineSize" type="range" min="22" max="80" value="48">
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sectionTitle">Video</div>
+    <div class="upload"><label style="display:block;font-size:12px;font-weight:800;margin-bottom:9px">Video file</label><input id="video" type="file" accept="video/mp4,video/webm,video/quicktime,video/*"><div id="fileName" class="file">No video selected</div><div class="hint">MP4 is recommended. The final composition is 1080×1080.</div></div>
+    <div class="rangeRow"><label>Crop zoom</label><output id="zoomOut">1.00×</output></div><input class="range" id="zoom" type="range" min="1" max="3" step="0.01" value="1">
+    <div class="cropButtons"><button class="miniBtn" id="resetCrop">Reset crop</button><button class="miniBtn" id="centerCrop">Center video</button></div>
+    <div class="cropHint">Drag the video inside the white video area with your finger or mouse. Use zoom to see more/less of the source.</div>
+  </div>
+
+  <div class="actions"><button class="btn primary" id="render">Generate MP4</button><button class="btn secondary" id="clear">Clear</button></div>
+  <div class="status" id="status">Ready.</div><div class="progress" id="progress"><i></i></div>
+  <div class="tip">Rendering happens on your device. Your video is not uploaded to a server.</div>
+</aside>
+
+<main class="stage"><div class="work"><div class="previewWrap">
+  <div class="videoArea" id="videoArea"><video id="preview" muted loop playsinline></video></div>
+  <div class="empty" id="empty">Upload a video to preview it here</div>
+  <div class="template"><div class="topbar"></div><div class="pill"><div class="pillText" id="topPreview"></div></div><div class="headline" id="headlinePreview"></div><img class="logo" src="./assets/logo.png"><div class="footer">LANKA VISION</div></div>
+  <div class="cropBadge">DRAG TO CROP</div>
+</div></div></main>
+</div>
+<div class="mobileGenerate"><button class="btn primary" id="mobileRender">Generate MP4</button></div>
+
+<script type="module">
+import { FFmpeg } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js';
+import { fetchFile, toBlobURL } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js';
+
+const $=id=>document.getElementById(id);
+const top=$('top'), headline=$('headline'), tp=$('topPreview'), hp=$('headlinePreview');
+const vid=$('video'), preview=$('preview'), empty=$('empty'), status=$('status'), fn=$('fileName');
+const renderBtn=$('render'), mobileRender=$('mobileRender'), progress=$('progress'), progressBar=progress.querySelector('i');
+const topCount=$('topCount'), headlineCount=$('headlineCount'), topSize=$('topSize'), headlineSize=$('headlineSize');
+const topSizeOut=$('topSizeOut'), headlineSizeOut=$('headlineSizeOut'), zoom=$('zoom'), zoomOut=$('zoomOut');
+const videoArea=$('videoArea');
+let selectedFile=null, objectUrl=null, ffmpeg=null, ffmpegLoaded=false;
+let crop={x:0,y:0,zoom:1}; let drag=null;
+
+function update(){
+ tp.textContent=top.value; hp.textContent=headline.value;
+ topCount.textContent=top.value.length; headlineCount.textContent=headline.value.length;
+ tp.style.fontSize=topSize.value+'px'; hp.style.fontSize=headlineSize.value+'px';
+ topSizeOut.textContent=topSize.value+' px'; headlineSizeOut.textContent=headlineSize.value+' px';
+ zoomOut.textContent=Number(crop.zoom).toFixed(2)+'×'; applyCrop();
+}
+[top,headline,topSize,headlineSize].forEach(el=>el.addEventListener('input',update));
+zoom.addEventListener('input',()=>{crop.zoom=Number(zoom.value);update()}); update();
+
+function applyCrop(){
+ preview.style.transform=`translate(${crop.x*50*(crop.zoom-1)}%,${crop.y*50*(crop.zoom-1)}%) scale(${crop.zoom})`;
+}
+function resetCrop(){crop={x:0,y:0,zoom:1};zoom.value='1';update()}
+$('resetCrop').onclick=resetCrop; $('centerCrop').onclick=()=>{crop.x=0;crop.y=0;update()};
+
+vid.addEventListener('change',()=>{const f=vid.files[0];if(!f)return;selectedFile=f;fn.textContent=f.name;if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=URL.createObjectURL(f);preview.src=objectUrl;empty.style.display='none';resetCrop();preview.play().catch(()=>{});status.textContent='Video loaded. Drag it to crop.'});
+
+function clearAll(){selectedFile=null;vid.value='';if(objectUrl)URL.revokeObjectURL(objectUrl);objectUrl=null;preview.removeAttribute('src');empty.style.display='flex';fn.textContent='No video selected';top.value='';headline.value='';resetCrop();status.textContent='Cleared.';progress.style.display='none';progressBar.style.width='0%'}
+$('clear').onclick=clearAll;
+
+videoArea.addEventListener('pointerdown',e=>{if(!selectedFile)return;drag={px:e.clientX,py:e.clientY,x:crop.x,y:crop.y};videoArea.classList.add('dragging');videoArea.setPointerCapture(e.pointerId)});
+videoArea.addEventListener('pointermove',e=>{if(!drag)return;const rect=videoArea.getBoundingClientRect();const dx=(e.clientX-drag.px)/Math.max(1,rect.width);const dy=(e.clientY-drag.py)/Math.max(1,rect.height);const denom=Math.max(.15,crop.zoom-1);crop.x=Math.max(-1,Math.min(1,drag.x+dx*2/denom));crop.y=Math.max(-1,Math.min(1,drag.y+dy*2/denom));update()});
+function endDrag(){drag=null;videoArea.classList.remove('dragging')}; videoArea.addEventListener('pointerup',endDrag); videoArea.addEventListener('pointercancel',endDrag); videoArea.addEventListener('dblclick',resetCrop);
+
+function escXml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;')}
+function wrapSinhala(text,max=26){const words=String(text||'').trim().split(/\s+/).filter(Boolean);const out=[];let line='';for(const w of words){const test=line?line+' '+w:w;if(test.length>max&&line){out.push(line);line=w}else line=test}if(line)out.push(line);return out.slice(0,3)}
+function makeSvg(topText,headlineText){
+ const t=wrapSinhala(topText,30),h=wrapSinhala(headlineText,25);const tf=Number(topSize.value),hf=Number(headlineSize.value);
+ const ty=t.length===1?77:69,hy=h.length===1?177:169;
+ const tx=t.map((x,i)=>`<text x="540" y="${ty+i*(tf+2)}">${escXml(x)}</text>`).join('');
+ const hx=h.map((x,i)=>`<text x="540" y="${hy+i*(hf+2)}">${escXml(x)}</text>`).join('');
+ return `<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080"><style>@font-face{font-family:Ganganee;src:url('font.ttf')}text{font-family:Ganganee;font-weight:400}.foot{font-family:Arial;font-weight:700;fill:#fff}</style><rect width="1080" height="1080" fill="#fff"/><rect width="1080" height="216" fill="#d40000"/><path d="M0 20 H1000 A48 48 0 0 1 1000 115 H0 Z" fill="#fff"/><g fill="#050505" font-size="${tf}" text-anchor="middle">${tx}</g><g fill="#fff" font-size="${hf}" text-anchor="middle">${hx}</g><image href="logo.png" x="933" y="234" width="112" height="110"/><rect y="1044" width="1080" height="36" fill="#d40000"/><text class="foot" x="540" y="1069" text-anchor="middle" font-size="19">LANKA VISION</text></svg>`;
+}
+async function loadFFmpeg(){if(ffmpegLoaded)return;status.textContent='Loading video renderer… first time may take a minute.';ffmpeg=new FFmpeg();ffmpeg.on('progress',({progress:p})=>{progressBar.style.width=Math.max(0,Math.min(100,p*100))+'%'});const base='https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';await ffmpeg.load({coreURL:await toBlobURL(`${base}/ffmpeg-core.js`,'text/javascript'),wasmURL:await toBlobURL(`${base}/ffmpeg-core.wasm`,'application/wasm')});ffmpegLoaded=true}
+async function renderVideo(){
+ if(!selectedFile){status.textContent='Please select a video first.';return} if(!top.value.trim()||!headline.value.trim()){status.textContent='Please enter both text fields.';return}
+ if(selectedFile.size>180*1024*1024){status.textContent='Please use a video smaller than 180 MB for browser rendering.';return}
+ renderBtn.disabled=true;mobileRender.disabled=true;progress.style.display='block';progressBar.style.width='0%';
+ try{
+  await loadFFmpeg();status.textContent='Preparing your video…';
+  const ext=(selectedFile.name.split('.').pop()||'mp4').toLowerCase();const inputName='input.'+ext;
+  await ffmpeg.writeFile(inputName,await fetchFile(selectedFile));await ffmpeg.writeFile('font.ttf',await fetchFile('./assets/4u-Ganganee.ttf'));await ffmpeg.writeFile('logo.png',await fetchFile('./assets/logo.png'));await ffmpeg.writeFile('overlay.svg',new TextEncoder().encode(makeSvg(top.value,headline.value)));
+  // Base crop fills 1080x828. Extra zoom and manual pan are applied after the cover scale.
+  const zx=crop.x,zy=crop.y,z=Number(crop.zoom);const xExpr=`(iw-1080)*(0.5+${zx}/2)`;const yExpr=`(ih-828)*(0.5+${zy}/2)`;
+  const filter=`[0:v]scale=1080:828:force_original_aspect_ratio=increase,scale=iw*${z}:ih*${z},crop=1080:828:${xExpr}:${yExpr},setsar=1[v];[1:v]format=rgba[ov];[v][ov]overlay=0:0:shortest=1,format=yuv420p[outv]`;
+  status.textContent='Rendering final MP4…';
+  await ffmpeg.exec(['-i',inputName,'-i','overlay.svg','-filter_complex',filter,'-map','[outv]','-map','0:a?','-c:v','libx264','-preset','veryfast','-crf','21','-c:a','aac','-b:a','128k','-movflags','+faststart','-shortest','final.mp4']);
+  const data=await ffmpeg.readFile('final.mp4');const blob=new Blob([data.buffer],{type:'video/mp4'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='lanka-vision-final.mp4';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);
+  status.textContent='Done — your final MP4 is ready.';progressBar.style.width='100%';
+  for(const f of [inputName,'font.ttf','logo.png','overlay.svg','final.mp4']){try{await ffmpeg.deleteFile(f)}catch{}}
+ }catch(e){console.error(e);status.textContent='Render failed: '+(e?.message||e)}finally{renderBtn.disabled=false;mobileRender.disabled=false}
+}
+renderBtn.onclick=renderVideo;mobileRender.onclick=renderVideo;
+</script>
+</body></html>
